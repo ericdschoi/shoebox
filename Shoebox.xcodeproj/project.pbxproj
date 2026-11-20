@@ -13,6 +13,7 @@
 		232B4AFFDA0A9D9842EF0931 /* ShoeboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32A3AA21797B1A6CEEE65D /* ShoeboxApp.swift */; };
 		2CFA772F0FE86542488299A0 /* DocumentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9A415A455A444274489E7 /* DocumentServices.swift */; };
 		2F58658D57F96658D2814ABA /* ShoeboxCore in Frameworks */ = {isa = PBXBuildFile; productRef = B04082EA9F698C332492302C /* ShoeboxCore */; };
+		2FCF4E2ED8E642646F247205 /* SelfTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DBCED2B800F5B2C83AAEFBB /* SelfTest.swift */; };
 		4866A39AEB3B78BC58BC434B /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DB4D97533CECA0C895CAE7 /* ExpenseDetailView.swift */; };
 		50E9598B9CCFFFD918AA5BAE /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6DB7F140952FB9607C2E1 /* Reports.swift */; };
 		6C81C3B08A274BCA73E0D073 /* CaptureViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B71291E71FA861E190FC4E0 /* CaptureViews.swift */; };
@@ -29,6 +30,7 @@
 		22C43A9272D2B8040ECB5617 /* ShoeboxCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ShoeboxCore; path = Packages/ShoeboxCore; sourceTree = SOURCE_ROOT; };
 		3F7CFC42C2E7108F0BBD67D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B71291E71FA861E190FC4E0 /* CaptureViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViews.swift; sourceTree = "<group>"; };
+		4DBCED2B800F5B2C83AAEFBB /* SelfTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfTest.swift; sourceTree = "<group>"; };
 		6AF10C6D92C2701FDDD2E933 /* WithdrawalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalsView.swift; sourceTree = "<group>"; };
 		96E690363255A8B6DEB1D8FB /* ExpenseEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditor.swift; sourceTree = "<group>"; };
 		9B5E457160303B1B2A4E4A1A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				D4C0F4EE17F37F1CDB04FB81 /* AppModel.swift */,
+				4DBCED2B800F5B2C83AAEFBB /* SelfTest.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 				F91F8ECAB719D15EBE4DFE63 /* OnboardingView.swift in Sources */,
 				50E9598B9CCFFFD918AA5BAE /* Reports.swift in Sources */,
 				1261DBF35710B3101F580880 /* RootView.swift in Sources */,
+				2FCF4E2ED8E642646F247205 /* SelfTest.swift in Sources */,
 				03609E843DD851E7D91855FF /* SettingsView.swift in Sources */,
 				232B4AFFDA0A9D9842EF0931 /* ShoeboxApp.swift in Sources */,
 				86CA255F1D93EE0D8947ABDB /* SummaryView.swift in Sources */,

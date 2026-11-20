@@ -90,6 +90,13 @@ jobs:
           shot 12-expense-dark -screen expense
           shot 13-add-dark -screen add
           shot 14-withdrawals-dark -tab 2
+          # Exercise exports, text recognition, integrity and mirroring inside the simulator.
+          xcrun simctl terminate "$UDID" com.ericdschoi.shoebox >/dev/null 2>&1 || true
+          xcrun simctl launch "$UDID" com.ericdschoi.shoebox -demo -selftest
+          sleep 25
+          DATA=$(xcrun simctl get_app_container "$UDID" com.ericdschoi.shoebox data)
+          cp -R "$DATA/Library/Caches/SelfTest" shots/selftest || true
+          cat shots/selftest/result.txt || true
           # Smaller copies keep the artifact quick to download and review.
           mkdir -p shots/small
           for f in shots/*.png; do sips -Z 1100 "$f" --out "shots/small/$(basename "$f")" >/dev/null; done

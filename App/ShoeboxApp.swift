@@ -101,6 +101,9 @@ enum Launch {
         default:
             break
         }
+        #if DEBUG
+        if arguments.contains("-selftest") { SelfTest.run(model: model) }
+        #endif
         return model
     }
 }
