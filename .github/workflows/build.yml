@@ -79,6 +79,12 @@ jobs:
           shot 08-settings -tab 3
           shot 09-onboarding -onboarding -empty
           shot 10-empty -empty
+          shot 15-expense-missing -screen expense -pick missing
+          shot 16-expense-partial -screen expense -pick partial
+          shot 17-withdraw-filled -screen withdraw -amount 1000
+          shot 18-integrity -screen integrity
+          shot 19-backup -screen backup
+          shot 20-withdrawals-empty -empty -tab 2
           xcrun simctl ui "$UDID" appearance dark
           shot 11-summary-dark -tab 0
           shot 12-expense-dark -screen expense

@@ -50,19 +50,6 @@ struct SummaryView: View {
             EmptyState(symbol: "doc.viewfinder",
                        title: "File your first expense",
                        message: "Scan a medical receipt or bill you paid yourself. Shoebox reads it, files it, and adds it to what you can withdraw later.")
-            HStack {
-                Spacer()
-                AddExpenseMenu {
-                    Label("Add expense", systemImage: "plus")
-                        .font(.headline)
-                        .padding(.horizontal, 22)
-                        .padding(.vertical, 13)
-                        .foregroundStyle(.white)
-                        .background(Color.brandFill, in: Capsule())
-                }
-                Spacer()
-            }
-            .padding(.bottom, 12)
         }
     }
 }
@@ -393,7 +380,8 @@ struct ExpenseRow: View {
                 Text(expense.displayProvider)
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
                 HStack(spacing: 5) {
                     Text(subtitle)
                         .font(.caption)
@@ -413,10 +401,9 @@ struct ExpenseRow: View {
                     .font(.system(.body, design: .rounded).weight(.semibold))
                     .monospacedDigit()
                     .foregroundStyle(.primary)
-                Label(shortStatus(status), systemImage: status.symbol)
+                TightLabel(text: shortStatus(status), symbol: status.symbol)
                     .font(.caption2.weight(.medium))
                     .foregroundStyle(status.tint)
-                    .labelStyle(.titleAndIcon)
                     .lineLimit(1)
             }
         }

@@ -157,7 +157,7 @@ struct PaperThumbnail: View {
             .frame(width: width, height: width * 1.3)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(Color.hairline, lineWidth: 0.5))
-            Label(kind.label, systemImage: kind.symbol)
+            TightLabel(text: kind.label, symbol: kind.symbol)
                 .font(.caption.weight(.medium))
                 .foregroundStyle(.secondary)
                 .lineLimit(1)

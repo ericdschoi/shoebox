@@ -88,7 +88,11 @@ struct ExpenseDetailView: View {
                 model.deleteExpense(expense.id)
             }
         } message: {
-            Text("Its documents are moved to the Removed folder in your archive, not erased.")
+            if model.ledger.reimbursedCents(for: expense.id) > 0 {
+                Text("\(Format.money(model.ledger.reimbursedCents(for: expense.id))) of it was reimbursed. That part of the withdrawal will no longer be matched to an expense. Its documents are moved to the Removed folder, not erased.")
+            } else {
+                Text("Its documents are moved to the Removed folder in your archive, not erased.")
+            }
         }
         .confirmationDialog("Remove this document?", isPresented: Binding(get: { removing != nil }, set: { if !$0 { removing = nil } }),
                             titleVisibility: .visible) {

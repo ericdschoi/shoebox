@@ -9,23 +9,22 @@ struct SettingsView: View {
 
     var body: some View {
         @Bindable var model = model
-        NavigationStack {
+        NavigationStack(path: $model.settingsPath) {
             Form {
                 Section {
-                    TextField("Account name", text: $accountLabel)
-                        .submitLabel(.done)
-                        .onSubmit(commitLabel)
-                    NavigationLink {
-                        EstablishedDateView()
-                    } label: {
+                    LabeledContent("Account name") {
+                        TextField("Optional", text: $accountLabel)
+                            .multilineTextAlignment(.trailing)
+                            .submitLabel(.done)
+                            .onSubmit(commitLabel)
+                    }
+                    NavigationLink(value: SettingsRoute.established) {
                         LabeledContent("Established") {
                             Text(model.ledger.settings.establishedOn.map(Format.day) ?? "Not set")
                                 .foregroundStyle(model.ledger.settings.establishedOn == nil ? Color.attention : Color.secondary)
                         }
                     }
-                    NavigationLink {
-                        PeopleView()
-                    } label: {
+                    NavigationLink(value: SettingsRoute.people) {
                         LabeledContent("People") {
                             Text(model.ledger.settings.people.map(\.name).joined(separator: ", "))
                                 .lineLimit(1)
@@ -48,9 +47,7 @@ struct SettingsView: View {
                     } label: {
                         Label("Show in Files", systemImage: "folder")
                     }
-                    NavigationLink {
-                        BackupFolderView()
-                    } label: {
+                    NavigationLink(value: SettingsRoute.backup) {
                         LabeledContent {
                             Text(model.mirrorName ?? "Off")
                                 .foregroundStyle(model.hasMirror ? Color.secondary : Color.attention)
@@ -58,9 +55,7 @@ struct SettingsView: View {
                             Label("Backup folder", systemImage: "externaldrive.badge.icloud")
                         }
                     }
-                    NavigationLink {
-                        IntegrityView()
-                    } label: {
+                    NavigationLink(value: SettingsRoute.integrity) {
                         Label("Check documents", systemImage: "checkmark.shield")
                     }
                 } header: {
@@ -99,9 +94,7 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    NavigationLink {
-                        HowItWorksView()
-                    } label: {
+                    NavigationLink(value: SettingsRoute.howItWorks) {
                         Label("How HSA reimbursement works", systemImage: "book")
                     }
                     LabeledContent("Version", value: Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0")
@@ -110,6 +103,15 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+            .navigationDestination(for: SettingsRoute.self) { route in
+                switch route {
+                case .established: EstablishedDateView()
+                case .people: PeopleView()
+                case .backup: BackupFolderView()
+                case .integrity: IntegrityView()
+                case .howItWorks: HowItWorksView()
+                }
+            }
             .onAppear { accountLabel = model.ledger.settings.accountLabel }
             .onDisappear(perform: commitLabel)
             .sheet(item: $share) { item in

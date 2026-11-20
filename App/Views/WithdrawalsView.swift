@@ -137,7 +137,8 @@ struct WithdrawalRow: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(withdrawal.note.isEmpty ? "Withdrawal" : withdrawal.note)
                     .font(.body.weight(.medium))
-                    .lineLimit(1)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.leading)
                 Text(Format.day(withdrawal.date))
                     .font(.caption)
                     .foregroundStyle(.secondary)
@@ -148,7 +149,7 @@ struct WithdrawalRow: View {
                     .font(.system(.body, design: .rounded).weight(.semibold))
                     .monospacedDigit()
                 if withdrawal.unmatchedCents > 0 {
-                    Label("\(Format.moneyWhole(withdrawal.unmatchedCents)) unmatched", systemImage: "exclamationmark.circle.fill")
+                    TightLabel(text: "\(Format.moneyWhole(withdrawal.unmatchedCents)) unmatched", symbol: "exclamationmark.circle.fill")
                         .font(.caption2.weight(.medium))
                         .foregroundStyle(Color.attention)
                 } else {
@@ -247,7 +248,8 @@ struct WithdrawalDetailView: View {
                                             VStack(alignment: .leading, spacing: 3) {
                                                 Text(pair.0.displayProvider)
                                                     .font(.body.weight(.medium))
-                                                    .lineLimit(1)
+                                                    .lineLimit(2)
+                                                    .multilineTextAlignment(.leading)
                                                 Text(Format.day(pair.0.serviceDate))
                                                     .font(.caption)
                                                     .foregroundStyle(.secondary)
@@ -569,8 +571,8 @@ struct WithdrawalEditor: View {
                 matching = .choose
                 selected = [expenseID]
                 amountText = Money.plain(cents: model.ledger.remainingCents(for: expense))
-            } else {
-                amountFocused = true
+            } else if Launch.isDemo, let preset = Launch.value(after: "-amount") {
+                amountText = preset
             }
         case .edit(let id):
             guard let withdrawal = model.ledger.withdrawals.first(where: { $0.id == id }) else { return }

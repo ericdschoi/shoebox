@@ -152,10 +152,12 @@ struct Card<Content: View>: View {
     @ViewBuilder var content: Content
 
     var body: some View {
-        content
-            .padding(padding)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: Metrics.cardRadius, style: .continuous))
+        VStack(alignment: .leading, spacing: 0) {
+            content
+        }
+        .padding(padding)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.cardBackground, in: RoundedRectangle(cornerRadius: Metrics.cardRadius, style: .continuous))
     }
 }
 
@@ -190,6 +192,21 @@ struct StatusBadge: View {
             .padding(.vertical, 5)
             .foregroundStyle(status.tint)
             .background(status.tint.opacity(0.13), in: Capsule())
+    }
+}
+
+/// An icon and a word set close together, for captions where the system label spacing is too loose.
+struct TightLabel: View {
+    var text: String
+    var symbol: String
+    var spacing: CGFloat = 4
+
+    var body: some View {
+        HStack(spacing: spacing) {
+            Image(systemName: symbol)
+            Text(text)
+        }
+        .accessibilityElement(children: .combine)
     }
 }
 

@@ -245,6 +245,9 @@ struct ExpenseEditor: View {
             if !amountText.isEmpty && amountCents == nil {
                 Text("Enter an amount like 125.00")
                     .foregroundStyle(Color.attention)
+            } else if let original, let cents = amountCents, cents < model.ledger.reimbursedCents(for: original.id) {
+                Text("\(Format.money(model.ledger.reimbursedCents(for: original.id))) of this expense has already been reimbursed. Saving a lower amount leaves the difference unmatched on that withdrawal.")
+                    .foregroundStyle(Color.attention)
             } else if candidates.count > 1 {
                 Text("Other amounts found on the document. Tap one if the first guess is wrong.")
             } else {

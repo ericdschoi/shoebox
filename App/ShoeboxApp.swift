@@ -64,10 +64,27 @@ enum Launch {
         let sorted = model.ledger.expenses.sorted { $0.serviceDate > $1.serviceDate }
         switch value(after: "-screen") {
         case "expense":
-            if let expense = sorted.first(where: { !$0.attachments.isEmpty && model.ledger.status(of: $0) == .unreimbursed }) {
-                model.tab = .expenses
-                model.expensePath = [ExpenseRoute(id: expense.id)]
+            let pick = value(after: "-pick")
+            let match = sorted.first { expense in
+                switch pick {
+                case "missing": return !model.ledger.documentIssues(for: expense).isEmpty && expense.attachments.isEmpty
+                case "partial": return model.ledger.status(of: expense) == .partiallyReimbursed
+                default: return !expense.attachments.isEmpty && model.ledger.status(of: expense) == .unreimbursed
+                }
             }
+            if let match {
+                model.tab = .expenses
+                model.expensePath = [ExpenseRoute(id: match.id)]
+            }
+        case "integrity":
+            model.tab = .settings
+            model.settingsPath = [.integrity]
+        case "backup":
+            model.tab = .settings
+            model.settingsPath = [.backup]
+        case "people":
+            model.tab = .settings
+            model.settingsPath = [.people]
         case "add":
             let sample = sorted.first.map { Reports.sampleDocument(for: $0, kind: .receipt) }
             let drafts = sample.map { [DraftDocument(data: $0, fileExtension: "pdf", originalName: "Scan.pdf", kind: .receipt,

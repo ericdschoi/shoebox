@@ -27,6 +27,10 @@ struct WithdrawalRoute: Hashable {
     let id: UUID
 }
 
+enum SettingsRoute: Hashable {
+    case established, people, backup, integrity, howItWorks
+}
+
 enum AppTab: Int, Hashable {
     case summary, expenses, withdrawals, settings
 }
@@ -68,6 +72,7 @@ final class AppModel {
     var banner: Banner?
     var expensePath: [ExpenseRoute] = []
     var withdrawalPath = NavigationPath()
+    var settingsPath: [SettingsRoute] = []
 
     var hasOnboarded: Bool { didSet { if !isDemo { defaults.set(hasOnboarded, forKey: Keys.onboarded) } } }
     var requiresUnlock: Bool { didSet { if !isDemo { defaults.set(requiresUnlock, forKey: Keys.requiresUnlock) } } }
