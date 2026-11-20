@@ -6,6 +6,8 @@ struct ExpenseDetailView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.dismiss) private var dismiss
     var expenseID: UUID
+    /// Open on iPhone Duo: documents are shown at the width of the pane, not as small thumbnails.
+    var showsLargeDocuments = false
 
     @State private var captureSource: CaptureSource?
     @State private var captureKind: AttachmentKind = .receipt
@@ -45,6 +47,9 @@ struct ExpenseDetailView: View {
         return ScrollView {
             VStack(spacing: Metrics.sectionSpacing) {
                 header(expense, status: status)
+                if showsLargeDocuments, !expense.attachments.isEmpty {
+                    largeDocuments(expense)
+                }
                 if status == .ineligible || status == .paidFromHSA {
                     eligibilityNote(expense)
                 }
@@ -255,6 +260,30 @@ struct ExpenseDetailView: View {
 
     // MARK: Documents
 
+    private func preview(_ attachment: Attachment) {
+        let url = model.store.url(for: attachment)
+        if FileManager.default.fileExists(atPath: url.path) {
+            previewURL = url
+        } else {
+            model.show("That file is missing from the archive", style: .warning)
+        }
+    }
+
+    /// Each document's first page at the width of the pane, so it can be read beside the amounts.
+    private func largeDocuments(_ expense: Expense) -> some View {
+        VStack(spacing: 12) {
+            ForEach(expense.attachments) { attachment in
+                Button {
+                    preview(attachment)
+                } label: {
+                    LargeAttachmentPreview(attachment: attachment)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel("\(attachment.kind.label), open full screen")
+            }
+        }
+    }
+
     private func documents(_ expense: Expense) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             SectionHeader(title: "Documents")
@@ -263,12 +292,7 @@ struct ExpenseDetailView: View {
                 HStack(alignment: .top, spacing: 12) {
                     ForEach(expense.attachments) { attachment in
                         Button {
-                            let url = model.store.url(for: attachment)
-                            if FileManager.default.fileExists(atPath: url.path) {
-                                previewURL = url
-                            } else {
-                                model.show("That file is missing from the archive", style: .warning)
-                            }
+                            preview(attachment)
                         } label: {
                             AttachmentThumbnail(attachment: attachment)
                         }

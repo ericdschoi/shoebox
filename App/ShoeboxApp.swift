@@ -74,7 +74,7 @@ enum Launch {
             }
             if let match {
                 model.tab = .expenses
-                model.expensePath = [ExpenseRoute(id: match.id)]
+                model.selectedExpenseID = match.id
             }
         case "integrity":
             model.tab = .settings
@@ -96,7 +96,7 @@ enum Launch {
         case "withdrawal":
             if let withdrawal = model.ledger.withdrawals.sorted(by: { $0.date > $1.date }).first {
                 model.tab = .withdrawals
-                model.withdrawalPath.append(WithdrawalRoute(id: withdrawal.id))
+                model.selectedWithdrawalID = withdrawal.id
             }
         default:
             break

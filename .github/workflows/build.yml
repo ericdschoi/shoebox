@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 jobs:
   build:
-    runs-on: macos-26
+    runs-on: xcode-27
     timeout-minutes: 40
     steps:
       - uses: actions/checkout@v4
@@ -52,7 +52,8 @@ jobs:
           UDID=$(xcrun simctl list devices available -j | python3 -c "
           import json,sys
           d=json.load(sys.stdin)['devices']
-          keys=sorted([k for k in d if 'iOS' in k], key=lambda k:[int(x) for x in k.split('iOS-')[-1].split('-')])
+          import re
+          keys=sorted([k for k in d if re.search(r'iOS-\d+-\d+$', k)], key=lambda k:[int(x) for x in k.split('iOS-')[-1].split('-')])
           phones=[x for x in d[keys[-1]] if x['name'].startswith('iPhone')]
           pick=[x for x in phones if x['name'].endswith(' Pro')] or phones
           print(pick[-1]['udid'])")
@@ -90,6 +91,27 @@ jobs:
           shot 12-expense-dark -screen expense
           shot 13-add-dark -screen add
           shot 14-withdrawals-dark -tab 2
+          # iPhone Duo. simctl cannot unfold the simulator, so these show the closed layout only.
+          MAIN=$UDID
+          xcrun simctl list runtimes
+          for RT in iOS-27-2-iPhone19-4 iOS-27-2 iOS-27-1; do
+            DUO=$(xcrun simctl create ci-duo "iPhone Duo" "com.apple.CoreSimulator.SimRuntime.$RT" 2>/dev/null) && break
+          done
+          if [ -n "$DUO" ]; then
+            UDID=$DUO
+            xcrun simctl boot "$UDID"
+            xcrun simctl bootstatus "$UDID" -b
+            xcrun simctl install "$UDID" "$APP"
+            xcrun simctl ui "$UDID" appearance light
+            shot duo-closed-01-summary -tab 0
+            shot duo-closed-02-expenses -tab 1
+            shot duo-closed-03-expense -screen expense
+            shot duo-closed-05-withdrawals -tab 2
+            shot duo-closed-07-withdrawal -screen withdrawal
+            shot duo-closed-08-settings -tab 3
+            xcrun simctl shutdown "$UDID" || true
+          fi
+          UDID=$MAIN
           # Exercise exports, text recognition, integrity and mirroring inside the simulator.
           xcrun simctl terminate "$UDID" com.ericdschoi.shoebox >/dev/null 2>&1 || true
           xcrun simctl launch "$UDID" com.ericdschoi.shoebox -demo -selftest

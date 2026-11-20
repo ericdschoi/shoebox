@@ -68,6 +68,7 @@ struct RootView: View {
 
 struct MainTabs: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         @Bindable var model = model
@@ -85,7 +86,29 @@ struct MainTabs: View {
                 SettingsView()
             }
         }
+        .modifier(TabSidebarWhenOpen(isOn: model.usesTabSidebar))
+        .environment(\.isOpenLayout, horizontalSizeClass == .regular)
     }
+}
+
+/// Open on iPhone Duo: moves the tabs from the bar into a sidebar. Closed, the tab bar is unchanged.
+private struct TabSidebarWhenOpen: ViewModifier {
+    var isOn: Bool
+
+    func body(content: Content) -> some View {
+        if #available(iOS 27.0, *), isOn {
+            content
+                .tabViewStyle(.sidebarAdaptable)
+                .defaultTabBarPlacement(.sidebar)
+        } else {
+            content
+        }
+    }
+}
+
+extension EnvironmentValues {
+    /// True when the whole window is wide enough for two panes, measured outside the tabs.
+    @Entry var isOpenLayout = false
 }
 
 /// The "add" control used in navigation bars: one tap opens every way to file an expense.

@@ -4,6 +4,7 @@ import ShoeboxCore
 
 struct SettingsView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.isOpenLayout) private var isOpenLayout
     @State private var accountLabel = ""
     @State private var share: ShareItem?
 
@@ -91,6 +92,18 @@ struct SettingsView: View {
                     Text("Privacy")
                 } footer: {
                     Text("Asks for Face ID, Touch ID or your passcode each time you open Shoebox. Nothing in the app is ever sent anywhere.")
+                }
+
+                if isOpenLayout {
+                    Section {
+                        Toggle(isOn: $model.usesTabSidebar) {
+                            Label("Tabs in a sidebar", systemImage: "sidebar.left")
+                        }
+                    } header: {
+                        Text("iPhone Duo")
+                    } footer: {
+                        Text("When the phone is open. Turn this off to keep the tab bar and give the two panes more room.")
+                    }
                 }
 
                 Section {

@@ -23,10 +23,6 @@ struct ExpenseRoute: Hashable {
     let id: UUID
 }
 
-struct WithdrawalRoute: Hashable {
-    let id: UUID
-}
-
 enum SettingsRoute: Hashable {
     case established, people, backup, integrity, howItWorks
 }
@@ -58,6 +54,7 @@ final class AppModel {
         static let mirrorBookmark = "mirrorBookmark"
         static let mirrorName = "mirrorName"
         static let mirrorDate = "mirrorDate"
+        static let tabBarWhenOpen = "tabBarWhenOpen"
     }
 
     private(set) var phase: Phase = .loading
@@ -70,13 +67,19 @@ final class AppModel {
     var sheet: ActiveSheet?
     var capture: CaptureSource?
     var banner: Banner?
-    var expensePath: [ExpenseRoute] = []
-    var withdrawalPath = NavigationPath()
+    /// The expense shown beside the list when open, or pushed over it when closed.
+    var selectedExpenseID: UUID?
+    /// The withdrawal shown beside the list when open, or pushed over it when closed.
+    var selectedWithdrawalID: UUID?
+    /// Expenses opened from the selected withdrawal.
+    var withdrawalDetailPath: [ExpenseRoute] = []
     var settingsPath: [SettingsRoute] = []
 
     var hasOnboarded: Bool { didSet { if !isDemo { defaults.set(hasOnboarded, forKey: Keys.onboarded) } } }
     var requiresUnlock: Bool { didSet { if !isDemo { defaults.set(requiresUnlock, forKey: Keys.requiresUnlock) } } }
     var isLocked = false
+    /// When open on iPhone Duo, tabs sit in a sidebar. Stored inverted so the sidebar is the default.
+    var usesTabSidebar: Bool { didSet { if !isDemo { defaults.set(!usesTabSidebar, forKey: Keys.tabBarWhenOpen) } } }
 
     // Backup folder
     enum MirrorState: Equatable {
@@ -99,6 +102,7 @@ final class AppModel {
         let lock = isDemo ? false : defaults.bool(forKey: Keys.requiresUnlock)
         self.hasOnboarded = isDemo ? true : defaults.bool(forKey: Keys.onboarded)
         self.requiresUnlock = lock
+        self.usesTabSidebar = isDemo ? true : !defaults.bool(forKey: Keys.tabBarWhenOpen)
         self.mirrorName = isDemo ? nil : defaults.string(forKey: Keys.mirrorName)
         self.mirrorDate = isDemo ? nil : defaults.object(forKey: Keys.mirrorDate) as? Date
         self.isLocked = lock
@@ -213,6 +217,8 @@ final class AppModel {
     func deleteExpense(_ id: UUID) {
         var attachments: [Attachment] = []
         if commit({ attachments = $0.deleteExpense(id) }) {
+            if selectedExpenseID == id { selectedExpenseID = nil }
+            withdrawalDetailPath.removeAll { $0.id == id }
             store.setAside(attachments)
             show("Expense deleted")
         }
@@ -227,6 +233,10 @@ final class AppModel {
 
     func deleteWithdrawal(_ id: UUID) {
         if commit({ $0.deleteWithdrawal(id) }) {
+            if selectedWithdrawalID == id {
+                selectedWithdrawalID = nil
+                withdrawalDetailPath = []
+            }
             show("Withdrawal deleted")
         }
     }

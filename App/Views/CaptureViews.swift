@@ -134,6 +134,42 @@ struct AttachmentThumbnail: View {
     }
 }
 
+/// A stored document's first page, as wide as the space it is given.
+struct LargeAttachmentPreview: View {
+    @Environment(AppModel.self) private var model
+    var attachment: Attachment
+
+    @State private var image: UIImage?
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Group {
+                if let image {
+                    Image(uiImage: image)
+                        .resizable()
+                        .scaledToFit()
+                } else {
+                    Rectangle()
+                        .fill(Color(uiColor: .tertiarySystemGroupedBackground))
+                        .aspectRatio(0.77, contentMode: .fit)
+                        .overlay {
+                            Image(systemName: attachment.kind.symbol)
+                                .font(.largeTitle)
+                                .foregroundStyle(.tertiary)
+                        }
+                }
+            }
+            .frame(maxWidth: .infinity)
+            .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(Color.hairline, lineWidth: 0.5))
+            TightLabel(text: attachment.kind.label, symbol: attachment.kind.symbol)
+        }
+        .task(id: attachment.id) {
+            image = await Thumbnailer.thumbnail(for: attachment, store: model.store, side: 900)
+        }
+    }
+}
+
 struct PaperThumbnail: View {
     var image: UIImage?
     var kind: AttachmentKind

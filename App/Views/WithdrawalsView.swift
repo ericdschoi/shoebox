@@ -3,10 +3,16 @@ import ShoeboxCore
 
 struct WithdrawalsView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    /// Which pane shows when closed: the list, or the selected withdrawal pushed over it.
+    @State private var compactColumn: NavigationSplitViewColumn = .sidebar
+
+    /// Open on iPhone Duo: the list and the selected withdrawal sit side by side.
+    private var isTwoPane: Bool { horizontalSizeClass == .regular }
 
     var body: some View {
         @Bindable var model = model
-        NavigationStack(path: $model.withdrawalPath) {
+        NavigationSplitView(preferredCompactColumn: $compactColumn) {
             ScrollView {
                 VStack(spacing: Metrics.sectionSpacing) {
                     if model.ledger.withdrawals.isEmpty {
@@ -31,13 +37,49 @@ struct WithdrawalsView: View {
                     .accessibilityLabel("Record a withdrawal")
                 }
             }
-            .navigationDestination(for: WithdrawalRoute.self) { route in
-                WithdrawalDetailView(withdrawalID: route.id)
-            }
-            .navigationDestination(for: ExpenseRoute.self) { route in
-                ExpenseDetailView(expenseID: route.id)
+        } detail: {
+            NavigationStack(path: $model.withdrawalDetailPath) {
+                Group {
+                    if let id = model.selectedWithdrawalID {
+                        WithdrawalDetailView(withdrawalID: id)
+                            .id(id)
+                    } else {
+                        ContentUnavailableView("No withdrawal selected", systemImage: "arrow.down.to.line",
+                                               description: Text("Choose a withdrawal to see the expenses it reimbursed."))
+                            .background(Color.screenBackground)
+                    }
+                }
+                .navigationDestination(for: ExpenseRoute.self) { route in
+                    ExpenseDetailView(expenseID: route.id, showsLargeDocuments: isTwoPane)
+                }
             }
         }
+        .navigationSplitViewStyle(.balanced)
+        .onChange(of: model.selectedWithdrawalID, initial: true) { _, selected in
+            compactColumn = selected == nil ? .sidebar : .detail
+        }
+        .onChange(of: isTwoPane, initial: true) { selectFirstIfNeeded() }
+        .onChange(of: model.ledger.withdrawals.count) { selectFirstIfNeeded() }
+    }
+
+    private var sortedWithdrawals: [Withdrawal] {
+        model.ledger.withdrawals.sorted {
+            $0.date == $1.date ? $0.createdAt > $1.createdAt : $0.date > $1.date
+        }
+    }
+
+    /// When open, the right pane always shows something. When closed, nothing is selected until a row is tapped.
+    private func selectFirstIfNeeded() {
+        guard isTwoPane, model.selectedWithdrawalID == nil else { return }
+        model.selectedWithdrawalID = sortedWithdrawals.first?.id
+    }
+
+    private func select(_ withdrawal: Withdrawal) {
+        if model.selectedWithdrawalID != withdrawal.id {
+            model.withdrawalDetailPath = []
+            model.selectedWithdrawalID = withdrawal.id
+        }
+        compactColumn = .detail
     }
 
     private var emptyState: some View {
@@ -98,9 +140,7 @@ struct WithdrawalsView: View {
     }
 
     private var history: some View {
-        let sorted = model.ledger.withdrawals.sorted {
-            $0.date == $1.date ? $0.createdAt > $1.createdAt : $0.date > $1.date
-        }
+        let sorted = sortedWithdrawals
         return VStack(alignment: .leading, spacing: 10) {
             SectionHeader(title: "History")
                 .padding(.top, 6)
@@ -108,13 +148,17 @@ struct WithdrawalsView: View {
                 VStack(spacing: 0) {
                     ForEach(Array(sorted.enumerated()), id: \.element.id) { index, withdrawal in
                         if index > 0 { Divider().padding(.leading, 70) }
-                        NavigationLink(value: WithdrawalRoute(id: withdrawal.id)) {
+                        Button {
+                            select(withdrawal)
+                        } label: {
                             WithdrawalRow(withdrawal: withdrawal)
                                 .padding(.horizontal, Metrics.cardPadding)
                                 .padding(.vertical, 12)
+                                .background(isTwoPane && model.selectedWithdrawalID == withdrawal.id ? Color.brandSoft : Color.clear)
                                 .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
+                        .accessibilityAddTraits(isTwoPane && model.selectedWithdrawalID == withdrawal.id ? .isSelected : [])
                     }
                 }
             }

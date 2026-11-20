@@ -4,28 +4,41 @@ import ShoeboxCore
 
 struct SummaryView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: Metrics.sectionSpacing) {
-                    BalanceCard()
+                Group {
                     if model.ledger.expenses.isEmpty {
-                        firstRun
+                        VStack(spacing: Metrics.sectionSpacing) {
+                            BalanceCard()
+                            firstRun
+                        }
+                    } else if horizontalSizeClass == .regular {
+                        // Open on iPhone Duo: totals on the left, things to act on on the right.
+                        HStack(alignment: .top, spacing: Metrics.sectionSpacing) {
+                            VStack(spacing: Metrics.sectionSpacing) {
+                                BalanceCard()
+                                StatStrip()
+                                yearChart
+                            }
+                            .frame(maxWidth: .infinity)
+                            VStack(spacing: Metrics.sectionSpacing) {
+                                attention
+                                RecentCard()
+                                backupNudge
+                            }
+                            .frame(maxWidth: .infinity)
+                        }
                     } else {
-                        StatStrip()
-                        if !model.ledger.expensesNeedingAttention.isEmpty {
-                            AttentionCard()
-                        }
-                        if model.ledger.totals.unmatchedWithdrawalCents > 0 {
-                            UnmatchedCard()
-                        }
-                        if model.ledger.yearSummaries.count > 0 {
-                            YearChartCard()
-                        }
-                        RecentCard()
-                        if !model.hasMirror, !model.isDemo, model.ledger.expenses.count >= 3 {
-                            BackupNudge()
+                        VStack(spacing: Metrics.sectionSpacing) {
+                            BalanceCard()
+                            StatStrip()
+                            attention
+                            yearChart
+                            RecentCard()
+                            backupNudge
                         }
                     }
                 }
@@ -42,6 +55,27 @@ struct SummaryView: View {
             .navigationDestination(for: ExpenseRoute.self) { route in
                 ExpenseDetailView(expenseID: route.id)
             }
+        }
+    }
+
+    @ViewBuilder private var attention: some View {
+        if !model.ledger.expensesNeedingAttention.isEmpty {
+            AttentionCard()
+        }
+        if model.ledger.totals.unmatchedWithdrawalCents > 0 {
+            UnmatchedCard()
+        }
+    }
+
+    @ViewBuilder private var yearChart: some View {
+        if model.ledger.yearSummaries.count > 0 {
+            YearChartCard()
+        }
+    }
+
+    @ViewBuilder private var backupNudge: some View {
+        if !model.hasMirror, !model.isDemo, model.ledger.expenses.count >= 3 {
+            BackupNudge()
         }
     }
 

@@ -3,8 +3,11 @@ import ShoeboxCore
 
 struct ExpensesView: View {
     @Environment(AppModel.self) private var model
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @State private var query = ""
     @State private var filter: Filter = .all
+    /// Which pane shows when closed: the list, or the selected expense pushed over it.
+    @State private var compactColumn: NavigationSplitViewColumn = .sidebar
 
     enum Filter: String, CaseIterable, Identifiable {
         case all = "All"
@@ -14,9 +17,11 @@ struct ExpensesView: View {
         var id: String { rawValue }
     }
 
+    /// Open on iPhone Duo: the list and the selected expense sit side by side.
+    private var isTwoPane: Bool { horizontalSizeClass == .regular }
+
     var body: some View {
-        @Bindable var model = model
-        NavigationStack(path: $model.expensePath) {
+        NavigationSplitView(preferredCompactColumn: $compactColumn) {
             Group {
                 if model.ledger.expenses.isEmpty {
                     ScrollView {
@@ -44,15 +49,40 @@ struct ExpensesView: View {
                     AddExpenseMenu { Image(systemName: "plus") }
                 }
             }
-            .navigationDestination(for: ExpenseRoute.self) { route in
-                ExpenseDetailView(expenseID: route.id)
+        } detail: {
+            NavigationStack {
+                if let id = model.selectedExpenseID {
+                    ExpenseDetailView(expenseID: id, showsLargeDocuments: isTwoPane)
+                        .id(id)
+                } else {
+                    ContentUnavailableView("No expense selected", systemImage: "doc.text.magnifyingglass",
+                                           description: Text("Choose an expense to see its details and receipt."))
+                        .background(Color.screenBackground)
+                }
             }
         }
+        .navigationSplitViewStyle(.balanced)
+        .onChange(of: model.selectedExpenseID, initial: true) { _, selected in
+            compactColumn = selected == nil ? .sidebar : .detail
+        }
+        .onChange(of: compactColumn) { _, column in
+            // Closed: going back to the list clears the selection, so tapping the same row opens it again.
+            if column == .sidebar, !isTwoPane { model.selectedExpenseID = nil }
+        }
+        .onChange(of: isTwoPane, initial: true) { selectFirstIfNeeded() }
+        .onChange(of: model.ledger.expenses.count) { selectFirstIfNeeded() }
+    }
+
+    /// When open, the right pane always shows something. When closed, nothing is selected until a row is tapped.
+    private func selectFirstIfNeeded() {
+        guard isTwoPane, model.selectedExpenseID == nil else { return }
+        model.selectedExpenseID = grouped.first?.expenses.first?.id
     }
 
     private var list: some View {
+        @Bindable var model = model
         let groups = grouped
-        return List {
+        return List(selection: $model.selectedExpenseID) {
             Section {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 8) {
@@ -77,7 +107,7 @@ struct ExpensesView: View {
             ForEach(groups, id: \.year) { group in
                 Section {
                     ForEach(group.expenses) { expense in
-                        NavigationLink(value: ExpenseRoute(id: expense.id)) {
+                        NavigationLink(value: expense.id) {
                             ExpenseRow(expense: expense)
                                 .padding(.vertical, 3)
                         }
