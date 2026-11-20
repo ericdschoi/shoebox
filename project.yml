@@ -1,0 +1,57 @@
+# Generate the Xcode project with:  brew install xcodegen && xcodegen generate
+name: Shoebox
+options:
+  bundleIdPrefix: com.ericdschoi
+  deploymentTarget:
+    iOS: "26.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    DEVELOPMENT_TEAM: 98F8SAK96X
+    CODE_SIGN_STYLE: Automatic
+    MARKETING_VERSION: "1.0"
+    CURRENT_PROJECT_VERSION: "1"
+packages:
+  ShoeboxCore:
+    path: Packages/ShoeboxCore
+schemes:
+  Shoebox:
+    build:
+      targets:
+        Shoebox: all
+    run:
+      config: Debug
+targets:
+  Shoebox:
+    type: application
+    platform: iOS
+    sources: [App]
+    dependencies:
+      - package: ShoeboxCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.ericdschoi.shoebox
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+    info:
+      path: Config/Shoebox-Info.plist
+      properties:
+        CFBundleDisplayName: Shoebox
+        UILaunchScreen: {}
+        ITSAppUsesNonExemptEncryption: false
+        NSCameraUsageDescription: Shoebox uses the camera to scan receipts and insurance statements.
+        NSFaceIDUsageDescription: Shoebox can require Face ID before showing your HSA records.
+        UIFileSharingEnabled: true
+        LSSupportsOpeningDocumentsInPlace: true
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleDocumentTypes:
+          - CFBundleTypeName: PDF document
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [com.adobe.pdf]
+          - CFBundleTypeName: Image
+            CFBundleTypeRole: Viewer
+            LSHandlerRank: Alternate
+            LSItemContentTypes: [public.image]

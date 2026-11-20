@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03609E843DD851E7D91855FF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9D7E5E2D6C9BE220AAAB3F0 /* SettingsView.swift */; };
+		1261DBF35710B3101F580880 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5E457160303B1B2A4E4A1A /* RootView.swift */; };
+		1AAA54B2543EE381DA5EEB8D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18954FFDD5FB6526E81C25A /* Theme.swift */; };
+		232B4AFFDA0A9D9842EF0931 /* ShoeboxApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD32A3AA21797B1A6CEEE65D /* ShoeboxApp.swift */; };
+		2CFA772F0FE86542488299A0 /* DocumentServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1D9A415A455A444274489E7 /* DocumentServices.swift */; };
+		2F58658D57F96658D2814ABA /* ShoeboxCore in Frameworks */ = {isa = PBXBuildFile; productRef = B04082EA9F698C332492302C /* ShoeboxCore */; };
+		4866A39AEB3B78BC58BC434B /* ExpenseDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7DB4D97533CECA0C895CAE7 /* ExpenseDetailView.swift */; };
+		50E9598B9CCFFFD918AA5BAE /* Reports.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6D6DB7F140952FB9607C2E1 /* Reports.swift */; };
+		6C81C3B08A274BCA73E0D073 /* CaptureViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B71291E71FA861E190FC4E0 /* CaptureViews.swift */; };
+		7102F52576B1F9E78CB69CBB /* WithdrawalsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6AF10C6D92C2701FDDD2E933 /* WithdrawalsView.swift */; };
+		86CA255F1D93EE0D8947ABDB /* SummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2C5F1A9011505762B51467 /* SummaryView.swift */; };
+		884B044A8F8351F193CC03FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F7CFC42C2E7108F0BBD67D4 /* Assets.xcassets */; };
+		8F7000D65E42D18EB9464C31 /* ExpensesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D637591D07F617ADF7FCDA2D /* ExpensesView.swift */; };
+		A849875CF24F7CFBD65E5934 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4C0F4EE17F37F1CDB04FB81 /* AppModel.swift */; };
+		E4B37F047506C5F964EE0795 /* ExpenseEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96E690363255A8B6DEB1D8FB /* ExpenseEditor.swift */; };
+		F91F8ECAB719D15EBE4DFE63 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C117E2A077AC76DAEE546400 /* OnboardingView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		22C43A9272D2B8040ECB5617 /* ShoeboxCore */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ShoeboxCore; path = Packages/ShoeboxCore; sourceTree = SOURCE_ROOT; };
+		3F7CFC42C2E7108F0BBD67D4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		4B71291E71FA861E190FC4E0 /* CaptureViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureViews.swift; sourceTree = "<group>"; };
+		6AF10C6D92C2701FDDD2E933 /* WithdrawalsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithdrawalsView.swift; sourceTree = "<group>"; };
+		96E690363255A8B6DEB1D8FB /* ExpenseEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseEditor.swift; sourceTree = "<group>"; };
+		9B5E457160303B1B2A4E4A1A /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A1D9A415A455A444274489E7 /* DocumentServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentServices.swift; sourceTree = "<group>"; };
+		A36D51844602469AC19CFD39 /* Shoebox.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Shoebox.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A9D7E5E2D6C9BE220AAAB3F0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C117E2A077AC76DAEE546400 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		C18954FFDD5FB6526E81C25A /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		CA2C5F1A9011505762B51467 /* SummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryView.swift; sourceTree = "<group>"; };
+		D4C0F4EE17F37F1CDB04FB81 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		D637591D07F617ADF7FCDA2D /* ExpensesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesView.swift; sourceTree = "<group>"; };
+		E6D6DB7F140952FB9607C2E1 /* Reports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reports.swift; sourceTree = "<group>"; };
+		E7DB4D97533CECA0C895CAE7 /* ExpenseDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseDetailView.swift; sourceTree = "<group>"; };
+		FD32A3AA21797B1A6CEEE65D /* ShoeboxApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoeboxApp.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		70B07932C97F59F4912D0609 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F58658D57F96658D2814ABA /* ShoeboxCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1D00CFBA2D10AE05D1DEC792 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				3F7CFC42C2E7108F0BBD67D4 /* Assets.xcassets */,
+				FD32A3AA21797B1A6CEEE65D /* ShoeboxApp.swift */,
+				6B6350F2688AC4BB3B70EFEB /* Design */,
+				891A24CB35B39D0FBB383FF2 /* Model */,
+				AD810018F25A73B1AEF88D4D /* Services */,
+				EC24EF9C208A33886CC20AB1 /* Views */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		56DF616B407E87D4D7F265B0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A36D51844602469AC19CFD39 /* Shoebox.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6B6350F2688AC4BB3B70EFEB /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				C18954FFDD5FB6526E81C25A /* Theme.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		7B1F3839A3599305EE3CFFC2 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				22C43A9272D2B8040ECB5617 /* ShoeboxCore */,
+			);
+			path = Packages;
+			sourceTree = "<group>";
+		};
+		891A24CB35B39D0FBB383FF2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				D4C0F4EE17F37F1CDB04FB81 /* AppModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9106796FB0B31C6DA839D1C1 = {
+			isa = PBXGroup;
+			children = (
+				1D00CFBA2D10AE05D1DEC792 /* App */,
+				7B1F3839A3599305EE3CFFC2 /* Packages */,
+				56DF616B407E87D4D7F265B0 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AD810018F25A73B1AEF88D4D /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				A1D9A415A455A444274489E7 /* DocumentServices.swift */,
+				E6D6DB7F140952FB9607C2E1 /* Reports.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		EC24EF9C208A33886CC20AB1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				4B71291E71FA861E190FC4E0 /* CaptureViews.swift */,
+				E7DB4D97533CECA0C895CAE7 /* ExpenseDetailView.swift */,
+				96E690363255A8B6DEB1D8FB /* ExpenseEditor.swift */,
+				D637591D07F617ADF7FCDA2D /* ExpensesView.swift */,
+				C117E2A077AC76DAEE546400 /* OnboardingView.swift */,
+				9B5E457160303B1B2A4E4A1A /* RootView.swift */,
+				A9D7E5E2D6C9BE220AAAB3F0 /* SettingsView.swift */,
+				CA2C5F1A9011505762B51467 /* SummaryView.swift */,
+				6AF10C6D92C2701FDDD2E933 /* WithdrawalsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7FED7A15415B0F27C3574F5F /* Shoebox */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 55761564896661992146F16A /* Build configuration list for PBXNativeTarget "Shoebox" */;
+			buildPhases = (
+				173418108CC90C5E6EED690D /* Sources */,
+				A67CD66461D1096AFD2605FD /* Resources */,
+				70B07932C97F59F4912D0609 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Shoebox;
+			packageProductDependencies = (
+				B04082EA9F698C332492302C /* ShoeboxCore */,
+			);
+			productName = Shoebox;
+			productReference = A36D51844602469AC19CFD39 /* Shoebox.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0FEB7F19BEB128FC508713E4 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					7FED7A15415B0F27C3574F5F = {
+						DevelopmentTeam = 98F8SAK96X;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = DDD5CF3E063B8DD1490A5436 /* Build configuration list for PBXProject "Shoebox" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 9106796FB0B31C6DA839D1C1;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				B8FA1F04098AE4AEF5CCD82F /* XCLocalSwiftPackageReference "Packages/ShoeboxCore" */,
+			);
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7FED7A15415B0F27C3574F5F /* Shoebox */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A67CD66461D1096AFD2605FD /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				884B044A8F8351F193CC03FB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		173418108CC90C5E6EED690D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A849875CF24F7CFBD65E5934 /* AppModel.swift in Sources */,
+				6C81C3B08A274BCA73E0D073 /* CaptureViews.swift in Sources */,
+				2CFA772F0FE86542488299A0 /* DocumentServices.swift in Sources */,
+				4866A39AEB3B78BC58BC434B /* ExpenseDetailView.swift in Sources */,
+				E4B37F047506C5F964EE0795 /* ExpenseEditor.swift in Sources */,
+				8F7000D65E42D18EB9464C31 /* ExpensesView.swift in Sources */,
+				F91F8ECAB719D15EBE4DFE63 /* OnboardingView.swift in Sources */,
+				50E9598B9CCFFFD918AA5BAE /* Reports.swift in Sources */,
+				1261DBF35710B3101F580880 /* RootView.swift in Sources */,
+				03609E843DD851E7D91855FF /* SettingsView.swift in Sources */,
+				232B4AFFDA0A9D9842EF0931 /* ShoeboxApp.swift in Sources */,
+				86CA255F1D93EE0D8947ABDB /* SummaryView.swift in Sources */,
+				1AAA54B2543EE381DA5EEB8D /* Theme.swift in Sources */,
+				7102F52576B1F9E78CB69CBB /* WithdrawalsView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		61AA835D9DB6BB081E366E44 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 98F8SAK96X;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		AF7919478FFB9EF3DDFC1B75 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Config/Shoebox-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ericdschoi.shoebox;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		D83D6F4CDE08046D21B42963 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = 98F8SAK96X;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		DF7AB570DFA3A10C5ACBAE67 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				INFOPLIST_FILE = "Config/Shoebox-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.ericdschoi.shoebox;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		55761564896661992146F16A /* Build configuration list for PBXNativeTarget "Shoebox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AF7919478FFB9EF3DDFC1B75 /* Debug */,
+				DF7AB570DFA3A10C5ACBAE67 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		DDD5CF3E063B8DD1490A5436 /* Build configuration list for PBXProject "Shoebox" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D83D6F4CDE08046D21B42963 /* Debug */,
+				61AA835D9DB6BB081E366E44 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		B8FA1F04098AE4AEF5CCD82F /* XCLocalSwiftPackageReference "Packages/ShoeboxCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/ShoeboxCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B04082EA9F698C332492302C /* ShoeboxCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = ShoeboxCore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 0FEB7F19BEB128FC508713E4 /* Project object */;
+}
