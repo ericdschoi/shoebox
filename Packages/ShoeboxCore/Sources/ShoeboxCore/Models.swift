@@ -111,7 +111,7 @@ public struct Attachment: Identifiable, Hashable, Codable, Sendable {
     public var byteCount: Int
 
     public init(id: UUID = UUID(), kind: AttachmentKind, relativePath: String, originalName: String,
-                addedAt: Date = Date(), sha256: String, byteCount: Int) {
+                addedAt: Date = Timestamp.now(), sha256: String, byteCount: Int) {
         self.id = id
         self.kind = kind
         self.relativePath = relativePath
@@ -147,7 +147,7 @@ public struct Expense: Identifiable, Hashable, Codable, Sendable {
     public init(id: UUID = UUID(), serviceDate: DayDate, provider: String, personID: UUID? = nil,
                 category: ExpenseCategory = .medical, amountCents: Int, paidFrom: PaymentSource = .outOfPocket,
                 note: String = "", attachments: [Attachment] = [], insuranceNotInvolved: Bool = false,
-                claimedAsDeduction: Bool = false, createdAt: Date = Date(), modifiedAt: Date = Date()) {
+                claimedAsDeduction: Bool = false, createdAt: Date = Timestamp.now(), modifiedAt: Date = Timestamp.now()) {
         self.id = id
         self.serviceDate = serviceDate
         self.provider = provider
@@ -192,7 +192,7 @@ public struct Withdrawal: Identifiable, Hashable, Codable, Sendable {
     public var createdAt: Date
 
     public init(id: UUID = UUID(), date: DayDate, amountCents: Int, note: String = "",
-                allocations: [Allocation] = [], createdAt: Date = Date()) {
+                allocations: [Allocation] = [], createdAt: Date = Timestamp.now()) {
         self.id = id
         self.date = date
         self.amountCents = amountCents
@@ -235,7 +235,7 @@ public struct Ledger: Hashable, Codable, Sendable {
 
     public init(schemaVersion: Int = Ledger.currentSchemaVersion, settings: LedgerSettings = LedgerSettings(),
                 expenses: [Expense] = [], withdrawals: [Withdrawal] = [],
-                createdAt: Date = Date(), modifiedAt: Date = Date()) {
+                createdAt: Date = Timestamp.now(), modifiedAt: Date = Timestamp.now()) {
         self.schemaVersion = schemaVersion
         self.settings = settings
         self.expenses = expenses

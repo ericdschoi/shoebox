@@ -243,7 +243,7 @@ extension Ledger {
     }
 
     /// Adds a new withdrawal or replaces the one with the same id.
-    public mutating func save(_ withdrawal: Withdrawal, now: Date = Date()) throws {
+    public mutating func save(_ withdrawal: Withdrawal, now: Date = Timestamp.now()) throws {
         try validate(withdrawal)
         if let index = withdrawals.firstIndex(where: { $0.id == withdrawal.id }) {
             withdrawals[index] = withdrawal
@@ -253,7 +253,7 @@ extension Ledger {
         modifiedAt = now
     }
 
-    public mutating func deleteWithdrawal(_ id: UUID, now: Date = Date()) {
+    public mutating func deleteWithdrawal(_ id: UUID, now: Date = Timestamp.now()) {
         withdrawals.removeAll { $0.id == id }
         modifiedAt = now
     }
@@ -265,7 +265,7 @@ extension Ledger {
     /// If an edit lowers the amount below what was already reimbursed, or makes the expense ineligible,
     /// the affected allocations are trimmed so the ledger never claims more than an expense cost. The
     /// trimmed money shows up as unmatched on the withdrawal, where the user can see and fix it.
-    public mutating func save(_ expense: Expense, now: Date = Date()) {
+    public mutating func save(_ expense: Expense, now: Date = Timestamp.now()) {
         var updated = expense
         updated.modifiedAt = now
         if let index = expenses.firstIndex(where: { $0.id == expense.id }) {
@@ -280,7 +280,7 @@ extension Ledger {
     /// Removes an expense and any allocations that pointed at it. Returns the attachments it had,
     /// so the caller can move their files out of the way.
     @discardableResult
-    public mutating func deleteExpense(_ id: UUID, now: Date = Date()) -> [Attachment] {
+    public mutating func deleteExpense(_ id: UUID, now: Date = Timestamp.now()) -> [Attachment] {
         guard let index = expenses.firstIndex(where: { $0.id == id }) else { return [] }
         let removed = expenses.remove(at: index)
         for w in withdrawals.indices {
@@ -305,6 +305,20 @@ extension Ledger {
                 excess -= cut
             }
             withdrawals[w].allocations.removeAll { $0.cents <= 0 }
+        }
+    }
+
+    // MARK: Duplicates
+
+    /// An existing expense with the same day and amount, and a matching (or missing) provider name.
+    /// Filing the same bill twice would overstate what can be withdrawn, so the app asks before saving one.
+    public func possibleDuplicate(of expense: Expense) -> Expense? {
+        let name = expense.provider.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        return expenses.first { other in
+            guard other.id != expense.id, other.serviceDate == expense.serviceDate,
+                  other.amountCents == expense.amountCents else { return false }
+            let otherName = other.provider.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+            return name.isEmpty || otherName.isEmpty || name == otherName
         }
     }
 

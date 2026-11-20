@@ -39,3 +39,11 @@ public enum Money {
         return String(format: "%@%d.%02d", sign, magnitude / 100, magnitude % 100)
     }
 }
+
+public enum Timestamp {
+    /// The current time to the whole second, which is the precision the ledger file keeps. Using it for
+    /// every new record means a ledger read back from disk is identical to the one that was saved.
+    public static func now() -> Date {
+        Date(timeIntervalSince1970: Date().timeIntervalSince1970.rounded(.down))
+    }
+}

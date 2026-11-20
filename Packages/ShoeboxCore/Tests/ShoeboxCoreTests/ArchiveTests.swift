@@ -85,6 +85,19 @@ final class ArchiveStoreTests: XCTestCase {
         XCTAssertFalse(text.contains("\\/"))
     }
 
+    func testFreshRecordsSurviveARoundTripExactly() throws {
+        // Records created "now" must compare equal after a save and load, with no sub-second drift.
+        let store = ArchiveStore(root: root)
+        var ledger = Ledger(settings: LedgerSettings(people: [Person(name: "Pat", relationship: .accountHolder)]))
+        var expense = Expense(serviceDate: day("2026-05-01"), provider: "Clinic", amountCents: 5_000)
+        expense.attachments = [try store.storeDocument(Data("x".utf8), kind: .receipt, originalName: "x", fileExtension: "txt",
+                                                       serviceDate: expense.serviceDate, provider: "Clinic", amountCents: 5_000)]
+        ledger.save(expense)
+        try ledger.save(Withdrawal(date: day("2026-06-01"), amountCents: 1_000, allocations: [Allocation(expenseID: expense.id, cents: 1_000)]))
+        try store.save(ledger)
+        XCTAssertEqual(try store.loadLedger(), ledger)
+    }
+
     func testStoredDocumentNamingAndChecksum() throws {
         let store = ArchiveStore(root: root)
         let data = Data("receipt body".utf8)

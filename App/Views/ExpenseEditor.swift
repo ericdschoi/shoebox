@@ -38,10 +38,12 @@ struct ExpenseEditor: View {
     @State private var isReading = false
     @State private var candidates: [Int] = []
     @State private var filledFromScan = false
+    @State private var dateNotFound = false
 
     @State private var captureSource: CaptureSource?
     @State private var previewURL: URL?
     @State private var confirmingDiscard = false
+    @State private var duplicate: Expense?
     @FocusState private var focus: Field?
 
     private var isNew: Bool {
@@ -89,6 +91,17 @@ struct ExpenseEditor: View {
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") { focus = nil }
+                }
+            }
+            .alert("Already filed?", isPresented: Binding(get: { duplicate != nil }, set: { if !$0 { duplicate = nil } })) {
+                Button("Save anyway") {
+                    duplicate = nil
+                    save(allowingDuplicate: true)
+                }
+                Button("Cancel", role: .cancel) { duplicate = nil }
+            } message: {
+                if let duplicate {
+                    Text("You already have \(Format.money(duplicate.amountCents)) at \(duplicate.displayProvider) on \(Format.day(duplicate.serviceDate)). Filing the same bill twice would overstate what you can withdraw.")
                 }
             }
             .confirmationDialog("Discard this expense?", isPresented: $confirmingDiscard, titleVisibility: .visible) {
@@ -282,7 +295,7 @@ struct ExpenseEditor: View {
                     }
                 }
             }
-            DatePicker("Date of service", selection: Binding(get: { date }, set: { date = $0; dateEdited = true }),
+            DatePicker("Date of service", selection: Binding(get: { date }, set: { date = $0; dateEdited = true; dateNotFound = false }),
                        in: ...Date(), displayedComponents: .date)
             if model.ledger.settings.people.count > 1 {
                 Picker("For", selection: $personID) {
@@ -300,6 +313,10 @@ struct ExpenseEditor: View {
             if let established = model.ledger.settings.establishedOn, serviceDay < established {
                 Label("This is before your HSA was established on \(Format.day(established)), so it can't be reimbursed.",
                       systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(Color.attention)
+            } else if dateNotFound {
+                Label("Couldn't read a date from the document, so this is set to today. Change it to the date of service.",
+                      systemImage: "calendar.badge.exclamationmark")
                     .foregroundStyle(Color.attention)
             }
         }
@@ -421,10 +438,15 @@ struct ExpenseEditor: View {
             adoptHabits(for: name)
             filled = true
         }
-        if !dateEdited, let day = guess.date {
-            date = day.date()
-            dateEdited = true
-            filled = true
+        if !dateEdited {
+            if let day = guess.date {
+                date = day.date()
+                dateEdited = true
+                dateNotFound = false
+                filled = true
+            } else {
+                dateNotFound = true
+            }
         }
         if filled {
             withAnimation(.snappy) { filledFromScan = true }
@@ -459,11 +481,16 @@ struct ExpenseEditor: View {
         return expense
     }
 
-    private func save() {
+    private func save(allowingDuplicate: Bool = false) {
         guard let cents = amountCents else { return }
         focus = nil
         let base = original ?? Expense(serviceDate: serviceDay, provider: "", amountCents: cents)
         let expense = built(from: base)
+        if isNew, !allowingDuplicate, let existing = model.ledger.possibleDuplicate(of: expense) {
+            duplicate = existing
+            Haptics.warning()
+            return
+        }
         let before = model.ledger.totals.availableCents
         guard model.save(expense, adding: drafts, removing: removed) else { return }
         Haptics.success()

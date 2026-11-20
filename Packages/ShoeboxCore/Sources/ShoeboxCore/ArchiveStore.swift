@@ -122,7 +122,7 @@ public struct ArchiveStore: Sendable {
     }
 
     /// Replaces the ledger with a snapshot. The damaged or unwanted ledger is kept beside it, never deleted.
-    public func restore(_ backup: Backup, now: Date = Date()) throws -> Ledger {
+    public func restore(_ backup: Backup, now: Date = Timestamp.now()) throws -> Ledger {
         let restored = try ArchiveStore.decodeLedger(at: backup.url)
         if ledgerExists {
             let stamp = Int(now.timeIntervalSince1970)
@@ -165,7 +165,7 @@ public struct ArchiveStore: Sendable {
     /// Copies a document into the archive under a readable, dated name and records its checksum.
     public func storeDocument(_ data: Data, kind: AttachmentKind, originalName: String, fileExtension: String,
                               serviceDate: DayDate, provider: String, amountCents: Int,
-                              id: UUID = UUID(), now: Date = Date()) throws -> Attachment {
+                              id: UUID = UUID(), now: Date = Timestamp.now()) throws -> Attachment {
         guard !data.isEmpty else { throw StoreError.emptyDocument }
         let name = ArchiveNaming.fileName(serviceDate: serviceDate, provider: provider, amountCents: amountCents,
                                           kind: kind, id: id, fileExtension: fileExtension)

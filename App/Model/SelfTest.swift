@@ -117,7 +117,7 @@ enum SelfTest {
             ]
             var y: CGFloat = 220
             for row in rows {
-                let font = UIFont.monospacedSystemFont(ofSize: row.2, weight: row.3)
+                let font = UIFont(name: row.3 == .bold ? "Courier-Bold" : "Courier", size: row.2) ?? .systemFont(ofSize: row.2, weight: row.3)
                 let attributes: [NSAttributedString.Key: Any] = [.font: font, .foregroundColor: UIColor(white: 0.1, alpha: 1)]
                 (row.0 as NSString).draw(at: CGPoint(x: 240, y: y), withAttributes: attributes)
                 if !row.1.isEmpty {

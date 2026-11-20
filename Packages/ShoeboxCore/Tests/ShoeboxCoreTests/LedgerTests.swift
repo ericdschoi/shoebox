@@ -272,6 +272,18 @@ final class LedgerMathTests: XCTestCase {
         XCTAssertEqual(rows.reduce(0) { $0 + $1.availableCents }, ledger.totals.availableCents)
     }
 
+    func testPossibleDuplicate() {
+        var (ledger, a, _, _) = makeLedger()
+        let same = Expense(serviceDate: a.serviceDate, provider: " a ", amountCents: a.amountCents)
+        XCTAssertEqual(ledger.possibleDuplicate(of: same)?.id, a.id)
+        XCTAssertNil(ledger.possibleDuplicate(of: a), "An expense is not a duplicate of itself")
+        XCTAssertNil(ledger.possibleDuplicate(of: Expense(serviceDate: a.serviceDate, provider: "A", amountCents: a.amountCents + 1)))
+        XCTAssertNil(ledger.possibleDuplicate(of: Expense(serviceDate: a.serviceDate, provider: "Other", amountCents: a.amountCents)))
+        XCTAssertNotNil(ledger.possibleDuplicate(of: Expense(serviceDate: a.serviceDate, provider: "", amountCents: a.amountCents)))
+        ledger.deleteExpense(a.id)
+        XCTAssertNil(ledger.possibleDuplicate(of: same))
+    }
+
     func testSearch() {
         var ledger = Ledger(settings: LedgerSettings(people: [Person(name: "Jordan", relationship: .spouse)]))
         let e = Expense(serviceDate: day("2024-06-15"), provider: "Brightside Dental", personID: ledger.settings.people[0].id,

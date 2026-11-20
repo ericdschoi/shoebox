@@ -11,12 +11,14 @@ final class PageWriter {
     private(set) var y: CGFloat = 0
     private var pageNumber = 0
     private let footer: String
+    private let numbersPages: Bool
 
     var contentWidth: CGFloat { PageWriter.pageSize.width - margin * 2 }
 
-    init(context: UIGraphicsPDFRendererContext, footer: String) {
+    init(context: UIGraphicsPDFRendererContext, footer: String, numbersPages: Bool) {
         self.context = context
         self.footer = footer
+        self.numbersPages = numbersPages
         newPage()
     }
 
@@ -25,7 +27,7 @@ final class PageWriter {
         pageNumber += 1
         y = margin
         let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 8), .foregroundColor: UIColor.gray]
-        let text = "\(footer)   ·   Page \(pageNumber)" as NSString
+        let text = (numbersPages ? "\(footer)   ·   Page \(pageNumber)" : footer) as NSString
         text.draw(at: CGPoint(x: margin, y: PageWriter.pageSize.height - margin + 14), withAttributes: attributes)
     }
 
@@ -105,10 +107,12 @@ enum Reports {
         return folder.appendingPathComponent(name)
     }
 
-    private static func render(footer: String, _ draw: (PageWriter) -> Void) -> Data {
+    /// `numbersPages` is off for sections that are stitched into a larger PDF, where a per-section
+    /// page number would be wrong.
+    private static func render(footer: String, numbersPages: Bool = false, _ draw: (PageWriter) -> Void) -> Data {
         let renderer = UIGraphicsPDFRenderer(bounds: CGRect(origin: .zero, size: PageWriter.pageSize))
         return renderer.pdfData { context in
-            draw(PageWriter(context: context, footer: footer))
+            draw(PageWriter(context: context, footer: footer, numbersPages: numbersPages))
         }
     }
 
@@ -121,8 +125,8 @@ enum Reports {
 
     private static func fact(_ page: PageWriter, _ label: String, _ value: String) {
         page.ensure(18)
-        page.text(label, font: .systemFont(ofSize: 10), color: .darkGray, width: 150, advance: false)
-        page.text(value, font: .systemFont(ofSize: 10.5, weight: .medium), x: page.margin + 150, width: page.contentWidth - 150)
+        page.text(label, font: .systemFont(ofSize: 10), color: .darkGray, width: 180, advance: false)
+        page.text(value, font: .systemFont(ofSize: 10.5, weight: .medium), x: page.margin + 190, width: page.contentWidth - 190)
         page.space(5)
     }
 
@@ -158,10 +162,10 @@ enum Reports {
                 PageWriter.Column(title: "#", fraction: 0.05),
                 PageWriter.Column(title: "DATE OF SERVICE", fraction: 0.16),
                 PageWriter.Column(title: "PROVIDER", fraction: 0.29),
-                PageWriter.Column(title: "FOR", fraction: 0.14),
+                PageWriter.Column(title: "FOR", fraction: 0.13),
                 PageWriter.Column(title: "PAID", fraction: 0.12, alignment: .right),
-                PageWriter.Column(title: "REIMBURSED HERE", fraction: 0.14, alignment: .right),
-                PageWriter.Column(title: "DOCS", fraction: 0.10, alignment: .right)
+                PageWriter.Column(title: "THIS WITHDRAWAL", fraction: 0.17, alignment: .right),
+                PageWriter.Column(title: "DOCS", fraction: 0.08, alignment: .right)
             ]
             page.rule()
             page.tableHeader(columns)
@@ -238,7 +242,7 @@ enum Reports {
     /// A printable list of every expense and where it stands.
     static func ledgerReport(_ ledger: Ledger) throws -> URL {
         let totals = ledger.totals
-        let data = render(footer: "HSA expense record · \(DayDate.today().iso)") { page in
+        let data = render(footer: "HSA expense record · \(DayDate.today().iso)", numbersPages: true) { page in
             heading(page, title: "HSA Expense Record", subtitle: "Prepared with Shoebox on \(Format.dayLong(.today()))")
             fact(page, "Account", ledger.settings.accountLabel.isEmpty ? "Health Savings Account" : ledger.settings.accountLabel)
             if let established = ledger.settings.establishedOn {
@@ -250,10 +254,10 @@ enum Reports {
             page.space(14)
             let columns = [
                 PageWriter.Column(title: "DATE OF SERVICE", fraction: 0.15),
-                PageWriter.Column(title: "PROVIDER", fraction: 0.29),
-                PageWriter.Column(title: "FOR", fraction: 0.12),
+                PageWriter.Column(title: "PROVIDER", fraction: 0.27),
+                PageWriter.Column(title: "FOR", fraction: 0.11),
                 PageWriter.Column(title: "PAID", fraction: 0.12, alignment: .right),
-                PageWriter.Column(title: "REIMBURSED", fraction: 0.13, alignment: .right),
+                PageWriter.Column(title: "REIMBURSED", fraction: 0.16, alignment: .right),
                 PageWriter.Column(title: "STATUS", fraction: 0.19, alignment: .right)
             ]
             page.rule()
