@@ -139,6 +139,9 @@ struct LockView: View {
     @Environment(AppModel.self) private var model
     @Environment(\.scenePhase) private var scenePhase
     @State private var failed = false
+    /// Whether the system prompt has already been shown for this lock. Without it, cancelling the
+    /// prompt would bring the app back to the foreground and immediately prompt again.
+    @State private var prompted = false
 
     var body: some View {
         ZStack {
@@ -163,13 +166,15 @@ struct LockView: View {
             }
             .padding(32)
         }
-        .onAppear { if scenePhase == .active { unlock() } }
+        .onAppear { if scenePhase == .active, !prompted { unlock() } }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { unlock() }
+            if phase == .background { prompted = false }
+            if phase == .active, !prompted { unlock() }
         }
     }
 
     private func unlock() {
+        prompted = true
         let context = LAContext()
         var error: NSError?
         guard context.canEvaluatePolicy(.deviceOwnerAuthentication, error: &error) else {
